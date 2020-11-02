@@ -1,0 +1,24 @@
+---
+title: Test for
+---
+
+[hello][1]
+
+{% highlight java linenos%}
+public class a{
+    public static void main(String[] args)
+    {
+        System.out.println("Hello, world!");
+    }
+}
+def show(name)
+  puts "hi, #{name}"
+end
+{% endhighlight %}
+
+
+When $a \ne 0$, there are two solutions to \(ax^2 + bx + c = 0\) and they are
+$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+
+
+[1]: {% post_url 2016-02-23-someIntroductionsAboutMyBlog %}

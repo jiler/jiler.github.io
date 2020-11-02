@@ -1,0 +1,46 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings can be quoted through {{ site.**** }}
+title: jiler
+email: jiler_wjp@aliyun.com
+description: > # this means to ignore newlines until "baseurl:"
+  Sharing of jiler's codes and emotions about life.
+baseurl: "" # the subpath of your site, e.g. /blog  
+
+# This url can be quoted through ![explination]({{ site.url }}/images/som.jpg) or [file]({{...}....}), when you want to show a picture and to a file for download. 
+url: "http://localhost:4000" # the base hostname & protocol for your site
+
+twitter_username: jekyllrb
+github_username:  jiler
+
+# Build settings
+markdown: kramdown 
+kramdown:
+  input: GFM
+
+plugins:
+   - jekyll-sitemap
+   - jemoji
+   - jekyll-redirect-from
+   - jekyll-feed
+   - jekyll-mentions
+   - jekyll-paginate
+
+# posts layout settings
+defaults:
+  - 
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+# page 
+paginate: 5
+paginate_path: "/paginate/:num/"
+
