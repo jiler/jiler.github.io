@@ -1,0 +1,38 @@
+I"Ú<p><a href="/2016/02/23/someIntroductionsAboutMyBlog.html">hello</a></p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="err">```</span> <span class="n">java</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">a</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, world!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">def</span> <span class="nf">show</span><span class="o">(</span><span class="n">name</span><span class="o">)</span>
+  <span class="n">puts</span> <span class="s">"hi, #{name}"</span>
+<span class="n">end</span>
+<span class="err">```</span>
+</pre></td></tr></tbody></table></code></pre></figure>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">a</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, world!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When $a \ne 0$, there are two solutions to (ax^2 + bx + c = 0) and they are
+\(x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\)</p>
+
+:ET

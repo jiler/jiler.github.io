@@ -1,0 +1,117 @@
+I"t.<h2 id="概述">概述</h2>
+<p>其实git的基本用法已经掌握，但是目前未参与过正规的大型项目开发。对于其中的一些git命令不是特别了解，比如<code class="language-plaintext highlighter-rouge">git tag</code>命令，我们一般不打tag。比如<code class="language-plaintext highlighter-rouge">git rebase</code>与<code class="language-plaintext highlighter-rouge">git revert</code>区别。</p>
+
+<h2 id="关于删除git-rm">关于删除<code class="language-plaintext highlighter-rouge">git rm</code></h2>
+<p>我们新建一个项目之后，一般会添加一个<code class="language-plaintext highlighter-rouge">.gitignore</code>的文件，忽略不被追踪的文件和文件夹。然后执行<code class="language-plaintext highlighter-rouge">git init</code>。或者在远程仓库建立一个project，<code class="language-plaintext highlighter-rouge">pull</code>到本地，然后初始化代码。</p>
+
+<p>问题是，我们用IDE产生的一些本机配置文件，不应该被追踪，如果我们已经<code class="language-plaintext highlighter-rouge">git add</code>，<code class="language-plaintext highlighter-rouge">git commit</code>将这些本机配置加入追踪了。那么如何删除呢？或者我们做web项目，一般有个<code class="language-plaintext highlighter-rouge">target/</code>文件夹，假如别人已经加入追踪了，如何删除呢？<br />
+其实挺简单，普通的删除，如果使用linux命令的话是<code class="language-plaintext highlighter-rouge">rm a.txt</code>，对应的git命令就是<code class="language-plaintext highlighter-rouge">git rm --cached *.iml</code>，删除目录对应的就是<code class="language-plaintext highlighter-rouge">git rm -r .idea/</code>。<code class="language-plaintext highlighter-rouge">--cached</code>的作用是，只删除暂存区，不删除工作区，如果不带这个参数，则表示都删除。
+<strong><em>工作区表示没有<code class="language-plaintext highlighter-rouge">git add</code>的存储区域，暂存区表示已经<code class="language-plaintext highlighter-rouge">git add</code>的存储区域</em></strong></p>
+
+<h2 id="关于-git-diff">关于 <code class="language-plaintext highlighter-rouge">git diff</code></h2>
+<p><code class="language-plaintext highlighter-rouge">git diff</code>用于查看还未commit的改动，如果我们使用IDE开发软件，其实IDEA的Version Control功能很好用，用不到这个命令。如果在服务器上改动代码，或者在无IDE的机器上用编译器写代码，这个命令就很好用了。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看工作区与暂存区的差别(这里只显示未被执行`git add`的文件)</span>
+git diff
+<span class="c"># 查看暂存区与版本库的差别(这里只显示已经被执行`git add`的文件)</span>
+git diff <span class="nt">--cached</span>
+<span class="c"># 查看工作区与版本库的差别(这里只显示未被执行`git commit`的文件)</span>
+git diff HEAD
+<span class="c"># 查看工作区与版本库的差别，只显示改动的文件名，不加`--stat`表示显示明细</span>
+git diff HEAD <span class="nt">--stat</span>
+<span class="c"># 只查看一个文件，工作区与版本库的差别</span>
+git diff HEAD <span class="nt">--</span> src/main/java/com/jiler/utils/MyDateUtils.java
+</code></pre></div></div>
+<p>还可以用于对比两个分支的差距。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以master为基准，看dev做了哪些修改，</span>
+git diff master dev
+<span class="c"># 以master为基准，看dev修改了哪些文件</span>
+git diff master dev <span class="nt">--stat</span>
+<span class="c"># 以master为基准，看dev的MyDateUtils文件修改了啥</span>
+git diff master dev src/main/java/com/jiler/utils/MyDateUtils.java
+</code></pre></div></div>
+
+<h2 id="撤销修改">撤销修改</h2>
+<p>如果修改的代码还未执行<code class="language-plaintext highlighter-rouge">git add</code>，则用如下命令可以撤销工作区的改动。相当于删掉修改的代码。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">--</span> src/main/java/com/jiler/utils/MyDateUtils.java
+</code></pre></div></div>
+<p>如果修改的代码已经执行<code class="language-plaintext highlighter-rouge">git add</code>，还未执行<code class="language-plaintext highlighter-rouge">git commit</code>，则用如下命令可以撤销缓存区的改动，把改动放回工作区。不会删除对代码的改动，如果要想删除修改的代码，可以继续执行上述命令。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reset HEAD src/main/java/com/jiler/utils/MyDateUtils.java
+</code></pre></div></div>
+
+<h2 id="git-stash"><code class="language-plaintext highlighter-rouge">git stash</code></h2>
+<p>正在开发，有的文件已经被add 有的文件没被add，甚至有的文件还没被track。这时候出线上bug了，就需要用到这个命令了。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看stash栈中的列表</span>
+git stash list
+<span class="c"># 将已经被track的文件改动暂时保存到栈顶</span>
+git stash
+<span class="c"># `-u`表示没有被track的文件也会被stash起来</span>
+git stash <span class="nt">-u</span>
+<span class="c"># 释放最顶层的栈元素。还有个命令`git stash apply`只应用代码改动，不删除栈顶元素。没想到场景，就不解释了</span>
+git stash pop
+<span class="c"># 丢弃最顶层的栈元素</span>
+git stash drop
+<span class="c"># 使用标号`stash@{0}`，直接使用栈的某个元素</span>
+git stash apply stash@<span class="o">{</span>0<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="不太常用">不太常用</h2>
+<p>不太常用，但是很有用的命令如下</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 生成公钥私钥</span>
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-C</span> <span class="s2">"jilerwu@icloud.com"</span>
+<span class="c"># 配置git全局</span>
+git config <span class="nt">--global</span> user.name <span class="s2">"wujunpeng"</span>
+git config <span class="nt">--global</span> user.email <span class="s2">"jilerwu@icloud.com"</span>
+<span class="c"># 从远程拉取本地不存在的分支</span>
+git fetch origin wjpdev:wjpdev
+<span class="c"># 删除远程分支关联(-D表示强制删除)</span>
+git branch -d -r origin/branch-name 
+<span class="c"># 打印git提交日志，每个commit一行</span>
+git log <span class="nt">--pretty</span><span class="o">=</span>oneline
+<span class="c"># 以图的形式展示merge日志</span>
+git log <span class="nt">--graph</span> <span class="nt">--pretty</span><span class="o">=</span>oneline
+<span class="c"># 直接跳转到某个commit的位置(--hard表示丢弃修改)</span>
+git reset <span class="nt">--hard</span> 7f96eb88dc
+<span class="c"># 直接跳转到某个commit的位置(--soft表示保留所有修改)</span>
+git reset <span class="nt">--soft</span> 7f96eb88dc
+<span class="c"># 快捷跳转到上一个提交</span>
+git reset <span class="nt">--hard</span> HEAD^
+<span class="c"># 撤销某一个commit内容，与reset的区别是revert是用一次新的commit去抵消之前的代码修改</span>
+git revert 7f96eb88dc
+<span class="c"># 本次仓库与远程同名参考建立联系（适用于本地先创建，远程后创建仓库）</span>
+git remote add origin git@github.com:jiler/jiler.github.io.git
+<span class="c"># add origin 后第一次应该使用如下命令推送master到远程</span>
+git push <span class="nt">-u</span> origin master
+<span class="c"># 查看关联名</span>
+git remote <span class="nt">-v</span>
+<span class="c"># 删除关联 origin</span>
+git remote <span class="nb">rm </span>origin
+<span class="c"># 查看执行命令的历史</span>
+git reflog
+</code></pre></div></div>
+
+<h2 id="关于git-tag">关于<code class="language-plaintext highlighter-rouge">git tag</code></h2>
+<p>用于跟某个commit绑定，容易查找代码。比如可以用tag表示版本信息。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 切换到对应分支，然后给当前commit打标签version1.0，可以给一个commit打两个标签</span>
+git tag version1.0
+<span class="c"># 给指定commit打标签，用-a指定标签名，-m指定说明文字。</span>
+git tag <span class="nt">-a</span> version1.0 <span class="nt">-m</span> <span class="s2">"打版本1.0的标签"</span> e7c1fbedcdfd
+<span class="c"># 把标签推送到远程，如果不推送到远程，默认都是在本地</span>
+git push origin version1.0
+<span class="c"># 把所有标签都推送到远程</span>
+git push origin <span class="nt">--tags</span>
+<span class="c"># 删除本地标签</span>
+git tag <span class="nt">-d</span> version1.0
+<span class="c"># 删除远程标签(允许不删除本地，直接删除远程标签)</span>
+git push origin :refs/tags/version1.0
+</code></pre></div></div>
+<h2 id="关于git-rebase">关于<code class="language-plaintext highlighter-rouge">git rebase</code></h2>
+<p>之前从没关注过这个功能，其实就是为了好看。就是为了把commit日志换成一条直线，详细描述详见<a href="https://www.yiibai.com/git/git_rebase.html">git教程</a></p>
+
+<p>用我自己的话叙述就是：master分支，你checkout一个dev，然后其他人这时候往master合并代码。这时候你如果使用<code class="language-plaintext highlighter-rouge">git rebase origin/master</code>命令的话，相当于把你的dev以当前master作为基准，在此基础之上commit信息。当然，有冲突就解决冲突。解决冲突后，用<code class="language-plaintext highlighter-rouge">git add .</code>和<code class="language-plaintext highlighter-rouge">git rebase --continue</code>合并，或者用<code class="language-plaintext highlighter-rouge">git rebase --abort</code>放弃干脆用merge命令重来。</p>
+
+<p>todo wujunpeng 明天测试一下，两个分支commit时间对于<code class="language-plaintext highlighter-rouge">当前master作为基准</code>这句话是否有影响。</p>
+
+<p>如果没有强制要求，我不会选择<code class="language-plaintext highlighter-rouge">git rebase dev</code>代替<code class="language-plaintext highlighter-rouge">git merge dev</code>，因为会造成一些问题。</p>
+
+<p>比如另外一个RD，开发了一个小功能，属于锦上添花的，合并到了master。他合并之前，你已经checkout了自己开发分支wjp-dev，如果不用<code class="language-plaintext highlighter-rouge">git pull origin master</code>或者<code class="language-plaintext highlighter-rouge">git merge origin/master</code>，而是使用<code class="language-plaintext highlighter-rouge">git rebase origin/master</code>，这时候你的代码就永远混入了别人的代码，你永远找不到rebase操作之前的代码了。大家使用<code class="language-plaintext highlighter-rouge">rebase</code>命令的前提是：共同写代码的同事能力还不错。可是一旦这个人锦上添花的小功能出bug，而又不能及时修复，而你开发的功能比较重要，不能下线，这时候很难受的。也就是说，虽然跟你合作的同事，代码已经合并到master，但是这个人是不完全被信任的，工作中是一定会遇到这种情况的。</p>
+:ET

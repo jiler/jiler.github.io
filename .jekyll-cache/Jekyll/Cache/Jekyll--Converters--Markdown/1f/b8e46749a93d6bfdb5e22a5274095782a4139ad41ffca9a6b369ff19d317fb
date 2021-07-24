@@ -1,0 +1,5 @@
+I"O<h2 id="概述">概述</h2>
+<p>Spring定义了org.springframework.cache.CacheManager和org.springframework.cache.Cache接口来统一不同的缓存技术。其中，CacheManager是Spring提供的各种缓存技术抽象接口，Cache接口包含缓存的各种操作。</p>
+<h3 id="cachemanager接口">CacheManager接口</h3>
+<p>Spring提供了不同的CacheManager实现来使用不同的技术：SimpleCacheManager使用简单的Collection来存储缓存，用于测试；ConcurrentMapCacheManager使用ConcurrentMap来存储缓存；RedisCacheManager使用redis作为缓存技术。</p>
+:ET

@@ -1,0 +1,3 @@
+I"�<h2 id="spring-boot运行原理">Spring boot运行原理</h2>
+<p>Spring boot用一个总注解<code class="language-plaintext highlighter-rouge">@SpringBootApplication</code>开启自动配置，其核心注解是<code class="language-plaintext highlighter-rouge">@EnableAutoConfiguration</code>。这个注解利用了<code class="language-plaintext highlighter-rouge">@  Import</code>来导入配置。其基本原理是EnableAutoConfigurationImportSelector使用SpringFactoriesLoader.loadFactoryNames()这个方法扫描具有META-INFO/spring.factories文件的包。这个文件里，用名为<code class="language-plaintext highlighter-rouge">org.springframework.boot.autoconfigure.EnableAutoConfiguration</code>的配置项声明了包含的自动配置。</p>
+:ET

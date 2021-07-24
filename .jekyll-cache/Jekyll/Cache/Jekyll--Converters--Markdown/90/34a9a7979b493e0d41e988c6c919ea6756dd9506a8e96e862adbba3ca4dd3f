@@ -1,0 +1,25 @@
+I"]<p>其实最主要想记录一下myql查看事务隔离级别的操作，搜了一下，有<a href="https://www.bilibili.com/read/cv1300354">相关文章</a>，记录一下。</p>
+
+<h2 id="如何查看和设置mysql的隔离级别">如何查看和设置mysql的隔离级别</h2>
+
+<h3 id="查看">查看</h3>
+<p>查看当前会话的隔离级别：<code class="language-plaintext highlighter-rouge">select @@tx_isolation;</code><br />
+查看全局的隔离级别：<code class="language-plaintext highlighter-rouge">select @@global.tx_isolation;</code><br />
+mysql默认的隔离基本是<code class="language-plaintext highlighter-rouge">可重复读 REPEATABLE-READ</code></p>
+
+<h3 id="设置">设置</h3>
+<p>设置当前会话的隔离级别：</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">set</span> <span class="k">session</span> <span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span> <span class="k">read</span> <span class="k">uncommitted</span><span class="p">;</span>
+<span class="k">set</span> <span class="k">session</span> <span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">read</span> <span class="k">committed</span><span class="p">;</span>
+<span class="k">set</span> <span class="k">session</span><span class="err"> </span><span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">repeatable</span> <span class="k">read</span><span class="p">;</span>
+<span class="k">set</span> <span class="k">session</span><span class="err"> </span><span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">serializable</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>设置当前会话的隔离级别：</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">set</span> <span class="k">global</span><span class="err"> </span><span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span> <span class="k">read</span> <span class="k">uncommitted</span><span class="p">;</span>
+<span class="k">set</span> <span class="k">global</span> <span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">read</span> <span class="k">committed</span><span class="p">;</span>
+<span class="k">set</span> <span class="k">global</span> <span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">repeatable</span> <span class="k">read</span><span class="p">;</span>
+<span class="k">set</span><span class="err"> </span><span class="k">global</span> <span class="n">transacton</span> <span class="k">isolation</span> <span class="k">level</span><span class="err"> </span><span class="k">serializable</span><span class="p">;</span>
+</code></pre></div></div>
+
+:ET

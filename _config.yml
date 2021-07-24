@@ -26,7 +26,6 @@ kramdown:
 plugins:
    - jekyll-sitemap
    - jemoji
-   - jekyll-redirect-from
    - jekyll-feed
    - jekyll-mentions
    - jekyll-paginate

@@ -1,0 +1,250 @@
+I"�N<h2 id="概述">概述</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c"># 告诉系统这个脚本需要什么解释器来执行，即使用哪一种 Shell。</span>
+
+:&lt;&lt;<span class="o">!</span>
+多行注释...
+多行注释...
+多行注释...
+<span class="o">!</span>
+
+</code></pre></div></div>
+
+<h2 id="字符串">字符串</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hi, jiler."</span>
+<span class="nb">echo</span> <span class="s2">"hi, wujunpeng"</span>
+
+<span class="c"># 变量名和等号之间不能有空格</span>
+<span class="nv">myName</span><span class="o">=</span><span class="s2">"wujunpeng"</span>
+<span class="nb">echo</span> <span class="nv">$myName</span>
+<span class="nb">echo</span> <span class="k">${</span><span class="nv">myName</span><span class="k">}</span>
+
+<span class="c"># 只读变量</span>
+<span class="nb">readonly </span>myName
+
+<span class="c"># 删除变量(不能删除只读变量)</span>
+<span class="nb">unset </span>myName
+
+<span class="c"># 字符串长度，效果一样</span>
+<span class="nv">str</span><span class="o">=</span><span class="s2">"test str"</span>
+<span class="nb">echo</span> <span class="nv">$#str</span> <span class="k">${#</span><span class="nv">str</span><span class="k">}</span>
+
+<span class="c"># 截取字符串，从第2位开始，截取1个字符</span>
+<span class="nb">echo</span> <span class="k">${</span><span class="nv">str</span>:1:1<span class="k">}</span>
+</code></pre></div></div>
+
+<h2 id="获取参数">获取参数</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 比如命令行执行为文件 ./start.sh</span>
+./start.sh wujunpeng firstPlan
+<span class="c"># 在./start.sh内部获取参数时，</span>
+<span class="nb">echo</span> <span class="s2">"执行的文件名：</span><span class="nv">$0</span><span class="s2">"</span><span class="p">;</span>
+<span class="nb">echo</span> <span class="s2">"第一个参数为：</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+<span class="nb">echo</span> <span class="s2">"第二个参数为：</span><span class="nv">$2</span><span class="s2">"</span><span class="p">;</span>
+<span class="c"># $10 不能获取第十个参数，获取第十个参数需要${10}</span>
+<span class="nv">$# </span><span class="c"># 表示参数个数</span>
+</code></pre></div></div>
+
+<h2 id="数组">数组</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">int_arr</span><span class="o">=(</span>1 2 3 4 5<span class="o">)</span>
+str_arr[0]<span class="o">=</span>My <span class="c"># #!/usr/bin/env zsh 数组下标从1开始</span>
+str_arr[1]<span class="o">=</span>name
+str_arr[2]<span class="o">=</span>is
+str_arr[3]<span class="o">=</span>wujunpeng
+
+<span class="nb">echo</span> <span class="nv">$int_arr</span><span class="o">[</span>1]
+
+<span class="nb">echo</span> <span class="s2">"数组的元素为: </span><span class="k">${</span><span class="nv">int_arr</span><span class="p">[*]</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"数组的元素为: </span><span class="k">${</span><span class="nv">int_arr</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span>
+<span class="nv">length</span><span class="o">=</span><span class="k">${#</span><span class="nv">int_arr</span><span class="p">[*]</span><span class="k">}</span> 获取数组长度
+<span class="nv">length</span><span class="o">=</span><span class="k">${#</span><span class="nv">int_arr</span><span class="p">[@]</span><span class="k">}</span> 获取数组长度
+
+</code></pre></div></div>
+
+<h2 id="if条件">if条件</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">a</span><span class="o">=</span>10
+<span class="nv">b</span><span class="o">=</span>20
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">==</span> <span class="nv">$b</span> <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"a 等于 b"</span>
+<span class="k">fi
+if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">!=</span> <span class="nv">$b</span> <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"a 不等于 b"</span>
+<span class="k">fi</span>
+<span class="c"># 写成一行</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">==</span> <span class="nv">$b</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"a 等于 b"</span><span class="p">;</span> <span class="k">fi</span>
+
+<span class="c"># if后的可以使用其他的语法，判断数据是否相等</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-eq</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断相等equals</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-ne</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断不相等 not equals</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-gt</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断&gt; greater than</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断&lt; less than</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-ge</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断&gt;= greater or equals</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-le</span> <span class="nv">$b</span> <span class="o">]</span> <span class="c"># 判断&lt;= less or equals</span>
+<span class="c"># 与或非 -a -o !，直接用&amp;&amp; 和 || 也支持</span>
+<span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> 20 <span class="nt">-a</span> <span class="nv">$b</span> <span class="nt">-gt</span> 100 <span class="o">]</span> <span class="c"># if (a &lt; 20 &amp;&amp; b &gt; 100)</span>
+<span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> 20 <span class="nt">-o</span> <span class="nv">$b</span> <span class="nt">-gt</span> 100 <span class="o">]</span> <span class="c"># if (a &lt; 20 || b &gt; 100)</span>
+
+<span class="c"># 可以判断字符串是否为空</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="nv">$str</span> <span class="o">]</span> <span class="c"># 检查字符串长度是否为0，如果为0则返回true</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="nv">$str</span> <span class="o">]</span> <span class="c"># 检查字符串长度是否不为0，如果不为0则返回true</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$str</span> <span class="o">]</span> <span class="c"># 字符串为空返回true</span>
+
+<span class="c"># 可以判断文件类型</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="nv">$fileAddress</span> <span class="o">]</span> <span class="c"># 如果是普通文件（不是目录，不是设备文件）返回true</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-r</span> <span class="nv">$fileAddress</span> <span class="o">]</span> <span class="c"># 检查文件是否可读；如果检查可写用-w，可执行用-x</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-e</span> <span class="nv">$fileAddress</span> <span class="o">]</span> <span class="c"># 检查文件是否存在，存在返回true</span>
+</code></pre></div></div>
+
+<h2 id="test">test</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span><span class="nb">test</span> <span class="nt">-e</span> <span class="nv">$str</span> <span class="c"># 如果文件存在</span>
+</code></pre></div></div>
+
+<h2 id="循环">循环</h2>
+<h3 id="for">for</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>each <span class="k">in </span>1 2 3 4 5
+<span class="k">do
+	</span><span class="nb">echo</span> <span class="nv">$each</span>
+<span class="k">done</span>
+<span class="c"># for循环遍历数组</span>
+<span class="nv">int_arr</span><span class="o">=(</span>1 2 3 4 5<span class="o">)</span>
+<span class="k">for </span>each <span class="k">in</span> <span class="k">${</span><span class="nv">int_arr</span><span class="p">[@]</span><span class="k">}</span>
+<span class="k">do
+	</span><span class="nb">echo</span> <span class="nv">$each</span>
+<span class="k">done</span>
+<span class="c"># for循环遍历带空格的元素</span>
+name_arr[0]<span class="o">=</span>jiler
+name_arr[1]<span class="o">=</span><span class="s2">"jiler hell"</span>
+<span class="nv">SAVEIFS</span><span class="o">=</span><span class="nv">$IFS</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nt">-en</span> <span class="s2">"</span><span class="se">\n\b</span><span class="s2">"</span><span class="si">)</span>
+<span class="k">for </span>each <span class="k">in</span> <span class="k">${</span><span class="nv">name_arr</span><span class="p">[@]</span><span class="k">}</span>
+<span class="k">do
+	</span><span class="nb">echo</span> <span class="k">${</span><span class="nv">each</span><span class="k">}</span>
+<span class="k">done
+</span><span class="nv">IFS</span><span class="o">=</span><span class="nv">$SAVEIFS</span>
+</code></pre></div></div>
+<h3 id="until">until</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">a</span><span class="o">=</span>0
+<span class="k">until</span> <span class="o">[</span> <span class="o">!</span> <span class="nv">$a</span> <span class="nt">-lt</span> 10 <span class="o">]</span>
+<span class="k">do
+   </span><span class="nb">echo</span> <span class="nv">$a</span>
+   <span class="nv">a</span><span class="o">=</span><span class="sb">`</span><span class="nb">expr</span> <span class="nv">$a</span> + 1<span class="sb">`</span>
+<span class="k">done</span>
+</code></pre></div></div>
+<h3 id="case-switch">case switch</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="nv">$aNum</span> <span class="k">in
+    </span>1<span class="p">)</span>  <span class="nb">echo</span> <span class="s1">'你选择了 1'</span>
+    <span class="p">;;</span>
+    2<span class="p">)</span>  <span class="nb">echo</span> <span class="s1">'你选择了 2'</span>
+    <span class="p">;;</span>
+    3<span class="p">)</span>  <span class="nb">echo</span> <span class="s1">'你选择了 3'</span>
+    <span class="p">;;</span>
+    4<span class="p">)</span>  <span class="nb">echo</span> <span class="s1">'你选择了 4'</span>
+    <span class="p">;;</span>
+    <span class="k">*</span><span class="p">)</span>  <span class="nb">echo</span> <span class="s1">'你没有输入 1 到 4 之间的数字'</span>
+    <span class="p">;;</span>
+<span class="k">esac</span>
+</code></pre></div></div>
+<h3 id="seq序列遍历">seq序列遍历</h3>
+<p>基本语法：<br />
+1 seq [选项]… 尾数<br />
+2 seq [选项]… 首数 尾数<br />
+3 seq [选项]… 首数 增量 尾数</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">seq</span> <span class="nt">-s</span> <span class="s1">'#'</span> 5 <span class="c"># 指定分隔符，横向输出 1#2#3#4#5</span>
+<span class="nb">seq</span> <span class="nt">-s</span> <span class="s1">' '</span> 10 <span class="c"># 空格作为分隔符</span>
+<span class="nb">seq</span> <span class="nt">-w</span> 1 10 <span class="c"># 前面补0，输出1-10</span>
+<span class="nb">seq </span>1 2 10 <span class="c"># 从1开始，增量为2，不超过10</span>
+<span class="nb">seq</span> <span class="nt">-f</span> <span class="s2">"%03g"</span> 98 101 <span class="c"># 宽度为3，不足补0</span>
+</code></pre></div></div>
+
+<h2 id="重定向">重定向</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 输出 重定向 到test.sh文件</span>
+<span class="nb">echo</span> <span class="s2">"wujunpeng"</span> <span class="o">&gt;</span> test.sh
+
+<span class="c"># 输入 重定向 到test.sh文件</span>
+<span class="nb">command</span> &lt; test.sh
+<span class="c"># 重定向输出，追加</span>
+<span class="nb">echo</span> <span class="s2">"wujunpeng"</span> <span class="o">&gt;&gt;</span> test.sh
+<span class="c"># 重定向输入</span>
+file &lt; test.sh
+<span class="c"># 将标准输出和标准错误输出 以追加的方式 重定向 到文件file</span>
+<span class="nb">command</span> <span class="o">&gt;&gt;</span> file 2&gt;&amp;1
+</code></pre></div></div>
+
+<h2 id="文件包含">文件包含</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 类似于include import等，可通过两种方式</span>
+<span class="nb">source</span> ./test1.sh
+<span class="nb">.</span> ./test1.sh
+</code></pre></div></div>
+<h2 id="awk-命令-行处理">awk 命令 行处理</h2>
+<p>处理文本文件的语言，是一个强大的文本分析工具</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">awk</span> <span class="s1">'{print $1,$4}'</span> log.txt <span class="c"># 打印出 log.txt文件 每行按空格分隔的第一个和第四个元素</span>
+<span class="nb">awk</span> <span class="nt">-F</span>, <span class="s1">'{print $1,$2}'</span>   log.txt <span class="c"># 打印出 log.txt文件 每行按逗号分隔的第一个和第四个元素</span>
+<span class="nb">awk</span> <span class="nt">-F</span> <span class="s1">'[ ,]'</span> <span class="s1">'{print $1,$2,$5}'</span> log.txt <span class="c"># 打印出 log.txt文件 每行按先按空格，再按逗号分隔的第一个和第四个元素</span>
+<span class="nb">awk</span> <span class="nt">-va</span><span class="o">=</span>1 <span class="s1">'{print $1,$1+a}'</span> log.txt <span class="c"># 设置变量a=1，如果$1是数字，则是加法；如果$1是字符串，则连接</span>
+<span class="nb">awk</span> <span class="s1">'$2 ~ /th/ {print $2,$4}'</span> log.txt <span class="c"># 第二列包含th的行，打印出第二例和第四列，~表示正则匹配</span>
+<span class="nb">awk</span> <span class="s1">'/re/ '</span> log.txt <span class="c"># 输出包含re的行</span>
+<span class="nb">awk</span> <span class="s1">'$2 !~ /th/ '</span> log.txt <span class="c"># 输出第二列不包含th的行</span>
+<span class="nb">awk</span> <span class="s1">'!/re/ '</span> log.txt <span class="c"># 输出不包含re的行</span>
+
+<span class="nb">awk</span> <span class="nt">-f</span> cal.awk score.txt <span class="c"># cal.awk内容详见附录</span>
+</code></pre></div></div>
+
+<h2 id="sed-命令">sed 命令</h2>
+<p>用脚本来处理文本文件，用来自动编辑一个或多个文件、简化对文件的反复操作、编写转换程序等。具体就不写例子了，目前其应用场景未知。</p>
+
+<h2 id="简单应用">简单应用</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># bc 命令</span>
+<span class="nb">echo</span> <span class="s1">'scale=2; (2.777 - 1.4744)/1'</span> | bc <span class="c"># 保留两位小数进行计算</span>
+<span class="nb">echo</span> <span class="s2">"obase=2;8"</span> | bc <span class="c"># 十进制转二进制</span>
+<span class="nb">echo</span> <span class="s2">"ibase=2;111"</span> | bc <span class="c"># 二进制转十进制</span>
+<span class="nb">echo</span> <span class="s2">"obase=10;ibase=2;1101"</span> | bc <span class="c"># 二进制转十进制</span>
+<span class="nb">echo</span> <span class="s2">"sqrt(100)"</span> | bc <span class="c"># 开平方</span>
+
+<span class="c"># nohup 命令 后台运行，比如java的发布就可以用</span>
+<span class="nb">nohup </span>java <span class="nt">-jar</span> <span class="k">*</span>.jar
+
+<span class="c"># wc 命令</span>
+<span class="nb">wc</span> <span class="nt">-l</span> Hello.java <span class="c"># 统计文件中的行数 -w表示字数 -c表示字节数</span>
+
+<span class="c"># scp 命令</span>
+scp /user/wujunpeng/web/test.java wujunpeng@192.168.0.23:~/Desktop
+<span class="c"># 如果是复制目录则用-r (-C 表示允许压缩 -P 4588表示指定端口)</span>
+scp <span class="nt">-r</span> /user/wujunpeng/web/test wujunpeng@192.168.0.23:~/Desktop
+
+
+<span class="c"># xargs 命令 给命令传递参数的过滤器，也是组合多个命令的工具</span>
+<span class="nb">seq</span> <span class="nt">-f</span> <span class="s2">"dir%03g"</span> 1 3 | xargs <span class="nb">mkdir</span> <span class="c"># 联系创建多个目录</span>
+
+<span class="c"># curl http命令行工具</span>
+curl <span class="nt">-o</span> /dev/null <span class="nt">-s</span> <span class="nt">-w</span> %<span class="o">{</span>http_code<span class="o">}</span> https://www.baidu.com <span class="c"># 获取访问百度的返回值</span>
+</code></pre></div></div>
+
+<h2 id="附录">附录</h2>
+<p>awk文件内容</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/awk -f</span>
+<span class="c">#运行前</span>
+BEGIN <span class="o">{</span>
+    math <span class="o">=</span> 0
+    english <span class="o">=</span> 0
+    computer <span class="o">=</span> 0
+
+    <span class="nb">printf</span> <span class="s2">"NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="nb">printf</span> <span class="s2">"---------------------------------------------</span><span class="se">\n</span><span class="s2">"</span>
+<span class="o">}</span>
+<span class="c">#运行中</span>
+<span class="o">{</span>
+    math+<span class="o">=</span><span class="nv">$3</span>
+    english+<span class="o">=</span><span class="nv">$4</span>
+    computer+<span class="o">=</span><span class="nv">$5</span>
+    <span class="nb">printf</span> <span class="s2">"%-6s %-6s %4d %8d %8d %8d</span><span class="se">\n</span><span class="s2">"</span>, <span class="nv">$1</span>, <span class="nv">$2</span>, <span class="nv">$3</span>,<span class="nv">$4</span>,<span class="nv">$5</span>, <span class="nv">$3</span>+<span class="nv">$4</span>+<span class="nv">$5</span>
+<span class="o">}</span>
+<span class="c">#运行后</span>
+END <span class="o">{</span>
+    <span class="nb">printf</span> <span class="s2">"---------------------------------------------</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="nb">printf</span> <span class="s2">"  TOTAL:%10d %8d %8d </span><span class="se">\n</span><span class="s2">"</span>, math, english, computer
+    <span class="nb">printf</span> <span class="s2">"AVERAGE:%10.2f %8.2f %8.2f</span><span class="se">\n</span><span class="s2">"</span>, math/NR, english/NR, computer/NR
+<span class="o">}</span>
+</code></pre></div></div>
+:ET

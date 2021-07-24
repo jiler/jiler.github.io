@@ -21,6 +21,134 @@ Spring提供xml、注解、java配置、groovy配置实现Bean的创建和注入
 
 ## Spring AOP
 AOP全称Aspect Oriented Programming，面向切面编程。Spring支持AspectJ注解式切面编程，todo wujunpeng 使用书中1.3.3的切面实现一下需求。
+比如，我们会用注解去修饰一个controller的若干个接口方法，用来做鉴权。
+例子代码如下：
+``` Java
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AuthAnnotation {
+
+    /**
+     * 接口类型
+     * 可以有多个参数，这里只有一个value参数，且有默认值
+     *
+     * @return String
+     */
+    String value() default "select";
+}
+```
+``` Java
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+@Aspect
+@Component
+public class AuthAspect {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthAspect.class);
+
+    /**
+     * 用户权限判断.
+     *
+     * @param pjp ProceedingJoinPoint
+     * @param annotation 注解
+     * @return Object
+     */
+    @Around(value = "@annotation(annotation)")
+    public Object process(ProceedingJoinPoint pjp, AuthAnnotation annotation) throws Throwable {
+        validate(annotation.value());
+        return pjp.proceed();
+    }
+
+    private void validate(String systemResourceCode) {
+        String currentUser = "获取当前用户";
+        LOGGER.info("当前登录用户：{}", currentUser);
+        boolean canAccess = checkAuth(currentUser, systemResourceCode);
+        if (!canAccess) {
+            LOGGER.info("当前登录用户：{}，无权限", currentUser);
+            throw new AuthException(ResponseState.ERROR_STATE.getCode(), "无权限");
+        }
+    }
+}
+```
+除了对应的`@Around`注解，还可以有`@Pointcut`，`@Before`，`@After`等。
+
+建立切入点，有好几种方式，常用的有`execution`和`annotation`两种
+``` Java
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class AuthAspect {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthAspect.class);
+
+    @Pointcut("execution(public * com.jiler..*getGoodsList(..))")
+    public void selectPoint() {
+
+    }
+
+    @Pointcut("execution(public * com.jiler..*test(..))")
+    public void testPoint() {
+
+    }
+
+    @Pointcut("@annotation(AuthAnnotation)")
+    public void annotationPoint() {
+
+    }
+
+    @Before("testPoint()")
+    public void before() {
+        LOGGER.info("有人查询了");
+    }
+
+    @Around("selectPoint()")
+    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+        LOGGER.info("有人查询了1");
+        joinPoint.proceed();
+        LOGGER.info("有人查询了2");
+
+    }
+
+    @After("annotationPoint()")
+    public void after(ProceedingJoinPoint joinPoint) {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        AuthAnnotation authAnnotation = methodSignature.getMethod().getAnnotation(AuthAnnotation.class);
+        String systemType = authAnnotation.value();
+
+        LOGGER.info("有人查询了3");
+    }
+
+}
+```
+
+## Spring中获取http请求和返回
+
+``` Java
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+HttpServletRequest request = attributes.getRequest();
+HttpServletResponse response = attributes.getResponse();
+```
 
 ## Spring Bean的Scope
 
@@ -105,7 +233,7 @@ public class UserController {
 <!-- xml依赖的包 这个包含了json的依赖，因此如果不支持xml，可以只用上面那个；如果要支持两种，只需要这个就够了-->
 <dependency>
     <groupId>com.fasterxml.jackson.dataformat</groupId>
-    <artifactId>jackson-dataformat-xml</artifactId>
+    <artifactId>jackson-dataformat-xml<artifactId>
     <version>2.9.3</version>
 </dependency>
 ```
